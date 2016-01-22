@@ -1,10 +1,16 @@
-#include "mainwindow.h"
+
 #include <QApplication>
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow *mainWindow = new MainWindow;
-    mainWindow->show();
-    return a.exec();
+//    Q_INIT_RESOURCE(application);
+
+    QApplication app(argc, argv);
+    app.setOrganizationName("QtProject");
+    app.setApplicationName("Application Example");
+    MainWindow mainWin;
+    mainWin.setFixedSize(800,500);
+    mainWin.show();
+    return app.exec();
 }

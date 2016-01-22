@@ -17,10 +17,15 @@ public:
 
 public slots:
       void init();
-      void openTabe();
+      void initTab();
+      void openTab();
+      void showConnectionsPanel();
+
+
 
 private:
     Ui::MainWindow *ui;
+    void initToolMenus();
 };
 
 #endif // MAINWINDOW_H
