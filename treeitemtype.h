@@ -1,0 +1,5 @@
+#ifndef TREEITEMTYPE
+#define TREEITEMTYPE
+
+#endif // TREEITEMTYPE
+
