@@ -1,4 +1,6 @@
 #include "treeview.h"
+#include "treeviewitem.h"
+#include "treeitemtype.h"
 #include <QModelIndex>
 #include <QDebug>
 #include <QMenu>
@@ -6,34 +8,44 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QRect>
+#include <QColor>
+#include <QPalette>
+#define ROLE_MARK Qt::UserRole +1
+#define ROLE_DATABASE 1
+#define ROLE_COLLECTIONS 2
+#define ROLE_FUNCTIONS 3
+#define ROLE_USERS 4
 
-TreeView::TreeView(QWidget *parent) :
+TreeView::TreeView(MainWindow *parent) :
     QTreeView(parent)
 {
-    this->parent = parent;
+    this->mainWindow = parent;
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    QPalette palette;
+    palette.setColor(QPalette::Base, QColor(192,192,192));
+    this->setPalette(palette);
     connect(this,SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomContextMenu(QPoint)));
 
     model = new QStandardItemModel(4, 1);
     model->setHeaderData(0, Qt::Horizontal, "Service");
 
     QStandardItem *item1 = new QStandardItem("avahi-daemon");
-
-    QStandardItem *item2 = new QStandardItem("bluetooth");
-
-    QStandardItem *item3 = new QStandardItem("crond");
-
-    QStandardItem *item4 = new QStandardItem("cups");
+item1->setIcon(QIcon(":/images/icons/computer.png"));
+    TreeViewItem *item2 = new TreeViewItem(*parent,"bluetooth",ROLE_DATABASE);
+    //TODO treeitem.h
+    TreeViewItem *item3 = new TreeViewItem(*parent,"crond",ROLE_DATABASE);
+    TreeViewItem *item4 = new TreeViewItem(*parent,"cups",ROLE_DATABASE);
 
 
     model->setItem(0, 0, item1);
-    model->setItem(1, 0, item2);
-    model->setItem(2, 0, item3);
-    model->setItem(3, 0, item4);
+    model->setItem(1, 0, item2->standardItem);
+    model->setItem(2, 0, item3->standardItem);
+    model->setItem(3, 0, item4->standardItem);
 
-    QStandardItem *item5 = new QStandardItem("fifth");
-    item4->appendRow(item5);
+    TreeViewItem *item5 = new TreeViewItem(*parent,"fifth",ROLE_COLLECTIONS);
+
+    item4->appendChild(item5);
     QModelIndex myparent;
     for (int i=0; i<4; i++)
     {
@@ -64,12 +76,21 @@ QList<QStandardItem *> TreeView::returnTheItems()
     return model->findItems("*", Qt::MatchWildcard | Qt::MatchRecursive);
 }
 
+void TreeView::selectionChanged( const QItemSelection & selected, const QItemSelection & deselected ){
+    qDebug()<<"selectionChanged";
+//    QTreeView::()
+
+    destroyMenu();
+}
+
 // 鼠标双击事件(输出被双击item的文本)
 void TreeView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
         QModelIndex index = currentIndex();
+
+       this->mainWindow->openTab(index.data().toString(),index.data().toString());
         qDebug()<<index.data().toString();
     }
 }
@@ -82,23 +103,51 @@ void TreeView::mousePressEvent(QMouseEvent *event){
 //右键
 void TreeView::slotCustomContextMenu(QPoint p) {
 
-    this->menu = new QMenu(this->parent);
-    this->isMenuDestroy = false;
+    this->creationMenu();
     QModelIndex index = this->currentIndex();
-    QString fileName = this->model->data(this->model->index(index.row(), 0),0).toString();
-    qDebug()<<fileName;
+//            QModelIndex index = this->indexAt(p);
+    QVariant var = index.data(ROLE_MARK);
+    if(var.isValid()){
+        switch (var.toInt()) {
+        case ROLE_DATABASE:
+            addDatabaseMenuAction();
+            break;
+        case ROLE_FUNCTIONS:
+            return;
+        case ROLE_COLLECTIONS:
+            addCollectionsMenuAction();
+            break;
+        default:
+            break;
+        }
+    }
+              qDebug()<<var.toInt();
 
 
-    this->menu->addAction(QString("Import"), this, SLOT(slotTest()));
-    this->menu->addAction(QString("Export"), this, SLOT(slotTest()));
+
     // 让父窗体响应鼠标事件 穿透
     this->menu->setWindowFlags(Qt::FramelessWindowHint);
     this->menu->setAttribute(Qt::WA_TranslucentBackground);
 
-    int px = QCursor().pos().rx()-this->parent->x();
-    int py = QCursor().pos().ry()-this->parent->y();
+    int px = QCursor().pos().rx()-this->mainWindow->x();
+    int py = QCursor().pos().ry()-this->mainWindow->y();
 
-    this->menu->exec(QPoint(px,py));
+    this->menu->exec(QPoint(px,py-25));
+}
+
+
+void TreeView::addCollectionsMenuAction(){
+    this->menu->addAction(QString("Collections Statistics"), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Create Collections"), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Refresh"), this, SLOT(slotTest()));
+}
+
+void TreeView::addDatabaseMenuAction(){
+    this->menu->addAction(QString("Open shell"), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Refresh"), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Database Statistics"), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Repair Database "), this, SLOT(slotTest()));
+    this->menu->addAction(QString("Drop Database "), this, SLOT(slotTest()));
 }
 
 void TreeView::slotTest() {
@@ -117,4 +166,22 @@ void TreeView::destroyMenu(){
         this->menu->~QMenu();
         this->isMenuDestroy = true;
     }
+}
+
+void TreeView::creationMenu(){
+
+//    while (this->waitDestroy) {
+//        QThread::sleep(50);
+//    }
+
+//    if(!this->isMenuDestroy) {
+//        this->waitDestroy = true;
+//        this->menu->~QMenu();
+//        this->isMenuDestroy = true;
+//    }
+
+    destroyMenu();
+    this->menu = new QMenu(this->mainWindow);
+    this->isMenuDestroy = false;
+//    this->waitDestroy = false;
 }

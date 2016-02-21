@@ -7,7 +7,9 @@ class TabWidget :public QTabWidget{
 
 public:
     TabWidget(QWidget *parent = 0);
-    void addTab(DataTable *dataTable,const QString &tabName);
+    void addTab(DataTable *dataTable, const QString &id,const QString &tabName);
+private:
+    QList<QString> *idList;
 };
 
 #endif // TABWIDGET

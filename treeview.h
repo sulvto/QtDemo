@@ -13,11 +13,14 @@ class TreeView : public QTreeView
 {
     Q_OBJECT
 public:
-    explicit TreeView(QWidget *parent = 0);
+    explicit TreeView(MainWindow *parent);
     void iteratorOverItems();
     QList<QStandardItem *> returnTheItems();
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
+    void addCollectionsMenuAction();
+    void addDatabaseMenuAction();
 
 signals:
 
@@ -25,14 +28,16 @@ public slots:
     void slotCustomContextMenu(QPoint);
     void slotMenuCustomContextMenu();
     void slotTest();
+    void creationMenu();
     void destroyMenu();
 
 private:
     QStandardItemModel *model;
     // 右键菜单
     QMenu *menu=NULL;
-    QWidget *parent;
+    MainWindow *mainWindow;
     bool isMenuDestroy = true;
+    bool waitDestroy = false;
 };
 
 #endif // TREEVIEW_H

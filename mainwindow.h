@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "tabwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,18 +15,25 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void addFileMenu();
+    void addViewMenu();
+    void addOptionsMenu();
+    void addWindowMenu();
+    void addHelpMenu();
 
 public slots:
       void init();
       void initTab();
-      void openTab();
+      void openTab(const QString &tabId, const QString &tabName);
       void showConnectionsPanel();
+      void removeTab(int index);
 
 
 
 private:
     Ui::MainWindow *ui;
     void initToolMenus();
+    TabWidget *tabWidget;
 };
 
 #endif // MAINWINDOW_H
