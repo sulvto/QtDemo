@@ -10,6 +10,8 @@
 #include <QTreeWidget>
 #include <QTreeView>
 #include <QTreeWidgetItem>
+#include <QDialog>
+
 #include <treeview.h>
 #include "qnamespace.h"
 #include "mainwindow.h"
@@ -18,6 +20,7 @@
 #include "tabwidget.h"
 #include "databasetreeitem.h"
 #include "ui_mainwindow.h"
+#include "connectionsdialog.h"
 #include "iostream"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -74,6 +77,9 @@ void MainWindow::initTab() {
 
 void MainWindow::showConnectionsPanel() {
     std::cout << "MainWindow showConnectionsPanel"<<std::endl;
+    ConnectionsDialog dialog;
+
+    dialog.exec();
 }
 
 void MainWindow::openTab(const QString &tabId, const QString &tabName) {
@@ -213,5 +219,4 @@ void MainWindow::removeTab(int index){
 //右键
 void MainWindow::slotCustomContextMenu(QPoint p) {
     std::cout << "MainWindow slotCustomContextMenu"<<std::endl;
-
 }

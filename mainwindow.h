@@ -30,7 +30,6 @@ public slots:
       void slotCustomContextMenu(QPoint);
 
 
-
 private:
     Ui::MainWindow *ui;
     void initToolMenus();

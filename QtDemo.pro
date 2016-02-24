@@ -8,7 +8,8 @@ HEADERS       = mainwindow.h \
     treeview.h \
     databasetreeitem.h \
     treeviewitem.h \
-    treeitemtype.h
+    treeitemtype.h \
+    connectionsdialog.h
 SOURCES       = main.cpp \
                 mainwindow.cpp \
     datatable.cpp \
@@ -17,7 +18,8 @@ SOURCES       = main.cpp \
     collectionitem.cpp \
     databaseitem.cpp \
     treeview.cpp \
-    treeviewitem.cpp
+    treeviewitem.cpp \
+    connectionsdialog.cpp
 #! [0]
 RESOURCES     = \
     img.qrc
