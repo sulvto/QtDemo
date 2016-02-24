@@ -6,7 +6,9 @@ HEADERS       = mainwindow.h \
     tabwidget.h \
     collectionitem.h \
     treeview.h \
-    databasetreeitem.h
+    databasetreeitem.h \
+    treeviewitem.h \
+    treeitemtype.h
 SOURCES       = main.cpp \
                 mainwindow.cpp \
     datatable.cpp \
@@ -14,9 +16,11 @@ SOURCES       = main.cpp \
     tabwidget.cpp \
     collectionitem.cpp \
     databaseitem.cpp \
-    treeview.cpp
+    treeview.cpp \
+    treeviewitem.cpp
 #! [0]
-RESOURCES     =
+RESOURCES     = \
+    img.qrc
 #! [0]
 
 FORMS += \

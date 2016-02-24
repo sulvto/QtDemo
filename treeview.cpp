@@ -10,6 +10,7 @@
 #include <QRect>
 #include <QColor>
 #include <QPalette>
+#include <QFocusEvent>
 #define ROLE_MARK Qt::UserRole +1
 #define ROLE_DATABASE 1
 #define ROLE_COLLECTIONS 2
@@ -184,4 +185,8 @@ void TreeView::creationMenu(){
     this->menu = new QMenu(this->mainWindow);
     this->isMenuDestroy = false;
 //    this->waitDestroy = false;
+}
+void TreeView::focusOutEvent ( QFocusEvent * event ) {
+    qDebug()<<"focusOutEvent";
+    destroyMenu();
 }

@@ -1,6 +1,7 @@
 #include "tabwidget.h"
 #include "datatable.h"
 #include <QTabWidget>
+#include <QDebug>
 #include <iostream>
 
 TabWidget::TabWidget(QWidget *parent){
@@ -19,4 +20,9 @@ void TabWidget::addTab(DataTable *dataTable, const QString &id, const QString &t
         QTabWidget::addTab(dataTable,tabName);
 //    }
 }
+
+void TabWidget::focusInEvent ( QFocusEvent * event ){
+    qDebug()<<"TabWidget focusInEvent";
+}
+
 

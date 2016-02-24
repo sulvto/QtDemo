@@ -52,6 +52,7 @@ void MainWindow::init() {
     primarySplitter->addWidget(treeView);
     primarySplitter->addWidget(tabWidget);
 
+
     QTextEdit *textEdit = new QTextEdit(QString("Logs"),secondSplitter);
 
     textEdit->setText(QString("aaa"));
@@ -206,5 +207,11 @@ void MainWindow::removeTab(int index){
     std::cout << "MainWindow removeTab"<<std::endl;
     this->tabWidget->removeTab(index);
     std::cout <<index<<std::endl;
+
+}
+
+//右键
+void MainWindow::slotCustomContextMenu(QPoint p) {
+    std::cout << "MainWindow slotCustomContextMenu"<<std::endl;
 
 }

@@ -27,6 +27,7 @@ public slots:
       void openTab(const QString &tabId, const QString &tabName);
       void showConnectionsPanel();
       void removeTab(int index);
+      void slotCustomContextMenu(QPoint);
 
 
 

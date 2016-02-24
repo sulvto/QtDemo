@@ -21,6 +21,7 @@ public:
     void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
     void addCollectionsMenuAction();
     void addDatabaseMenuAction();
+    void focusOutEvent ( QFocusEvent * event );
 
 signals:
 

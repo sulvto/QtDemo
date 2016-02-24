@@ -1,2 +1,8 @@
-<RCC/>
-
+<RCC>
+    <qresource prefix="/">
+        <file>images/open.png</file>
+        <file>images/icons/folder.png</file>
+        <file>images/icons/computer.png</file>
+        <file>images/icons/database.png</file>
+    </qresource>
+</RCC>
